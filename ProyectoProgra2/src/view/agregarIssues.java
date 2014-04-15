@@ -5,31 +5,41 @@
 package view;
 
 import business.IssuesBusiness;
+import business.TareasBusiness;
 import domain.Issue;
+import domain.Tarea;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author william
+ * @author Alejandro
  */
 public class agregarIssues extends javax.swing.JInternalFrame {
     private int cod_tarea;
+    
 
     /**
      * Creates new form agregarIssues
      */
-    public agregarIssues() {
+    public agregarIssues(){
         initComponents();
+        
     }
-    
-    public int getCod_Tarea() {
+
+    public int getCod_tarea() {
         return cod_tarea;
     }
 
-    public void setCod_Tarea(int cod_tarea) {
+    public void setCod_tarea(int cod_tarea) {
         this.cod_tarea = cod_tarea;
     }
+    
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,6 +57,10 @@ public class agregarIssues extends javax.swing.JInternalFrame {
         txtDescripcion = new javax.swing.JTextArea();
         btAgregar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Titulo");
@@ -79,42 +93,46 @@ public class agregarIssues extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(btAgregar)
-                        .addGap(86, 86, 86)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(18, 18, 18)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(65, 65, 65)
+                                .addComponent(jLabel1)
+                                .addGap(55, 55, 55))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1)
-                            .addComponent(txtTitulo))))
-                .addContainerGap(75, Short.MAX_VALUE))
+                            .addComponent(txtTitulo)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(btAgregar)
+                        .addGap(80, 80, 80)
+                        .addComponent(jButton2)))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addComponent(jLabel2))
+                        .addGap(36, 36, 36)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addGap(69, 69, 69)
+                        .addComponent(jLabel2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btAgregar)
                     .addComponent(jButton2))
-                .addGap(38, 38, 38))
+                .addGap(71, 71, 71))
         );
 
         pack();
@@ -128,7 +146,7 @@ public class agregarIssues extends javax.swing.JInternalFrame {
             
             i.setTitulo(txtTitulo.getText());
             i.setDescripcion(txtDescripcion.getText());
-            i.setId_tarea(this.cod_tarea);
+            i.setId_tarea(cod_tarea);
             issueBl.agregar(i);
             JOptionPane.showMessageDialog(rootPane, "issue agregado");
         

@@ -260,49 +260,35 @@ public class QA extends javax.swing.JFrame {
 
     private void AgregarTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarTareaActionPerformed
         try {
-        int cod_Proyecto= Integer.parseInt(JOptionPane.showInputDialog("digite el cod del proyecto"));
-        Proyecto proyecto= new Proyecto();
-        proyecto.setId(cod_Proyecto);
-        proyecto.setId_usuario(usuario.getId());
-        ProyectosBusiness pbl = new ProyectosBusiness();
-        proyecto=pbl.buscar(proyecto);
-        if(proyecto.getId_usuario()==usuario.getId()){
-                agregarTareas t=new agregarTareas();
-                t.setCod_Proyecto(cod_Proyecto);
-                t.setVisible(true);
-                t.setTitle(usuario.getNombre()+" "+usuario.getPuesto());
-                jDesktopPane1.add(t);
-            }else{
-            throw new Exception("El proyecto no existe en la BD");
-        }
+            agregarTareas t = new agregarTareas(usuario.getId());
+            
+            t.setVisible(true);
+            t.setTitle(usuario.getNombre()+" "+usuario.getPuesto());
+            jDesktopPane1.add(t);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(QA.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(QA.class.getName()).log(Level.SEVERE, null, ex);
         }
+                
+            
+        
         
     }//GEN-LAST:event_AgregarTareaActionPerformed
 
     private void VerTareasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerTareasActionPerformed
         try {
-            int cod_Proyecto= Integer.parseInt(JOptionPane.showInputDialog("digite el cod del proyecto"));
-            Proyecto proyecto= new Proyecto();
-            proyecto.setId(cod_Proyecto);
-            proyecto.setId_usuario(usuario.getId());
-            ProyectosBusiness pbl = new ProyectosBusiness();
-            proyecto=pbl.buscar(proyecto);
-            if(proyecto.getId_usuario()==usuario.getId()){
-                buscarTareas bt = new buscarTareas(cod_Proyecto);
-                bt.setVisible(true);
-                bt.setTitle(usuario.getNombre()+" "+usuario.getPuesto());
-                jDesktopPane1.add(bt);
-            }
-            
+            buscarTareas bt = new buscarTareas(usuario.getId());
+            bt.setVisible(true);
+            bt.setTitle(usuario.getNombre()+" "+usuario.getPuesto());
+            jDesktopPane1.add(bt);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(QA.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(QA.class.getName()).log(Level.SEVERE, null, ex);
         }
+                
+           
         
     }//GEN-LAST:event_VerTareasActionPerformed
 
@@ -314,14 +300,14 @@ public class QA extends javax.swing.JFrame {
 
     private void agregarIssuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarIssuesActionPerformed
         int cod_tarea=Integer.parseInt(JOptionPane.showInputDialog("digite el cod del la tarea"));
-        Issue i= new Issue();
-        
-        agregarIssues issues=new agregarIssues();
+        agregarIssues issues = new agregarIssues();
         issues.setVisible(true);
-        issues.setCod_Tarea(cod_tarea);
+        issues.setCod_tarea(cod_tarea);
         issues.setTitle(usuario.getNombre()+" "+usuario.getPuesto());
         
         jDesktopPane1.add(issues);
+        
+        
     }//GEN-LAST:event_agregarIssuesActionPerformed
 
     private void actualizarIssuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarIssuesActionPerformed
@@ -330,7 +316,7 @@ public class QA extends javax.swing.JFrame {
         
         ActualizarIssues issues=new ActualizarIssues();
         issues.setVisible(true);
-        issues.setCod_Tarea(cod_tarea);
+        issues.setCod_tarea(cod_tarea);
         issues.setTitle(usuario.getNombre()+" "+usuario.getPuesto());
         jDesktopPane1.add(issues);
     }//GEN-LAST:event_actualizarIssuesActionPerformed
@@ -353,26 +339,20 @@ public class QA extends javax.swing.JFrame {
 
     private void actualizarTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarTareaActionPerformed
         try {
-        int cod_Proyecto= Integer.parseInt(JOptionPane.showInputDialog("digite el cod del proyecto"));
-        Proyecto proyecto= new Proyecto();
-        proyecto.setId(cod_Proyecto);
-        proyecto.setId_usuario(usuario.getId());
-        ProyectosBusiness pbl = new ProyectosBusiness();
-        proyecto=pbl.buscar(proyecto);
-        if(proyecto.getId_usuario()==usuario.getId()){
-                ActualizarTareas act=new ActualizarTareas();
-                act.setCod_Proyecto(cod_Proyecto);
-                act.setVisible(true);
-                act.setTitle(usuario.getNombre()+" "+usuario.getPuesto());
-                jDesktopPane1.add(act);
-            }else{
-            throw new Exception("El proyecto no existe en la BD");
-        }
+            
+            ActualizarTareas act= new ActualizarTareas(usuario.getId());
+            act.setVisible(true);
+            act.setTitle(usuario.getNombre()+" "+usuario.getPuesto());
+            jDesktopPane1.add(act);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(QA.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(QA.class.getName()).log(Level.SEVERE, null, ex);
         }
+                
+                
+            
+        
     }//GEN-LAST:event_actualizarTareaActionPerformed
 
     /**

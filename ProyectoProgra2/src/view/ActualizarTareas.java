@@ -4,11 +4,15 @@
  */
 package view;
 
+import business.ProyectosBusiness;
 import business.TareasBusiness;
+import domain.Proyecto;
 import domain.Tarea;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,23 +20,48 @@ import javax.swing.JOptionPane;
  * @author william
  */
 public class ActualizarTareas extends javax.swing.JInternalFrame {
-    private  int cod_Proyecto;
+    private  int id_usuario;
+    private ArrayList <Proyecto>  lista= new ArrayList();
 
     /**
      * Creates new form ActualizarTareas
      */
-    public ActualizarTareas() {
+    public ActualizarTareas(int id) throws SQLException, Exception {
         initComponents();
+        this.id_usuario=id;
+        cargarCombobox();
+        idCombobox();
+    }
+
+    public void cargarCombobox() throws SQLException, Exception{
+        DefaultComboBoxModel modelo= new DefaultComboBoxModel();
+        
+        ProyectosBusiness proyectoBl = new ProyectosBusiness();
+        lista=proyectoBl.obtener(id_usuario);
+        int cod;
+        for(Proyecto p:lista){
+            cod=p.getId();
+            modelo.addElement(cod);
+            
+        }
+        jComboBox1.setModel(modelo);
         
     }
     
-    public int getCod_Proyecto() {
-        return cod_Proyecto;
+    public void idCombobox() throws SQLException{
+        DefaultComboBoxModel modelo= new DefaultComboBoxModel();
+        int cod_Proyecto=(int) jComboBox1.getSelectedItem();
+        TareasBusiness tareaBl=new TareasBusiness();
+        ArrayList<Tarea> listaId= new ArrayList();
+        listaId=tareaBl.obtener(cod_Proyecto);
+        for(Tarea t:listaId){
+            modelo.addElement(t.getId());
+            
+        }
+        idCombox.setModel(modelo);
     }
-
-    public void setCod_Proyecto(int cod_Proyecto) {
-        this.cod_Proyecto = cod_Proyecto;
-    }
+    
+    
     
     
 
@@ -47,12 +76,14 @@ public class ActualizarTareas extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescripcion = new javax.swing.JTextArea();
         btActualizar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
+        idCombox = new javax.swing.JComboBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -79,48 +110,71 @@ public class ActualizarTareas extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("seleccione proyecto");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        idCombox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(47, 47, 47)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(43, 43, 43)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-                                .addComponent(txtId))
-                            .addComponent(btActualizar)))
-                    .addComponent(jLabel3))
-                .addContainerGap(124, Short.MAX_VALUE))
+                            .addComponent(idCombox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(155, 155, 155)
+                        .addComponent(btActualizar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(104, 104, 104)
+                        .addComponent(jLabel3))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel3)))
-                .addGap(47, 47, 47)
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(idCombox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(btActualizar)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGap(33, 33, 33))
         );
 
         pack();
@@ -130,9 +184,11 @@ public class ActualizarTareas extends javax.swing.JInternalFrame {
          try {
             TareasBusiness t= new TareasBusiness();
             Tarea tarea= new Tarea();
-            tarea.setId(Integer.parseInt(txtId.getText()));
+            int id=(int) idCombox.getSelectedItem();
+            tarea.setId(id);
             tarea.setNombre(txtNombre.getText());
             tarea.setDescripcion(txtDescripcion.getText());
+            int cod_Proyecto=(int) jComboBox1.getSelectedItem();
             tarea.setId_Proyecto(cod_Proyecto);
        
             t.actualizar(tarea);
@@ -143,14 +199,24 @@ public class ActualizarTareas extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btActualizarActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        try {
+            idCombobox();
+        } catch (SQLException ex) {
+            Logger.getLogger(ActualizarTareas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btActualizar;
+    private javax.swing.JComboBox idCombox;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtDescripcion;
-    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

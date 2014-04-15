@@ -4,12 +4,15 @@
  */
 package view;
 
+import business.ProyectosBusiness;
 import business.TareasBusiness;
+import domain.Proyecto;
 import domain.Tarea;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,20 +22,37 @@ import javax.swing.table.DefaultTableModel;
  */
 public class buscarTareas extends javax.swing.JInternalFrame {
     private  ArrayList<Tarea>listaTareas;
-    private int cod_Proyecto;
+    private ArrayList <Proyecto>  lista;
+    private  int id_usuario;
 
     /**
      * Creates new form buscarTareas
      */
-    public buscarTareas(int id) throws SQLException {
+    public buscarTareas(int id) throws SQLException, Exception {
         initComponents();
         listaTareas=new ArrayList();
-        cod_Proyecto=id;
+        lista=new ArrayList();
+        this.id_usuario=id;
+        cargarCombobox();
         cargarTabla();
+        
     }
 
     
-    
+    public void cargarCombobox() throws SQLException, Exception{
+        DefaultComboBoxModel modelo= new DefaultComboBoxModel();
+        
+        ProyectosBusiness proyectoBl = new ProyectosBusiness();
+        lista=proyectoBl.obtener(id_usuario);
+        int cod;
+        for(Proyecto p:lista){
+            cod=p.getId();
+            modelo.addElement(cod);
+            
+        }
+        jComboBox1.setModel(modelo);
+        
+    }
     
     
     
@@ -47,6 +67,7 @@ public class buscarTareas extends javax.swing.JInternalFrame {
         modelo.addColumn("cod_Proyecto");
         
         TareasBusiness tareaBl= new TareasBusiness();
+        int cod_Proyecto=(int) jComboBox1.getSelectedItem();
         listaTareas=tareaBl.obtener(cod_Proyecto);
         
         for(Tarea t:listaTareas){
@@ -73,6 +94,7 @@ public class buscarTareas extends javax.swing.JInternalFrame {
         modelo.addColumn("Usuario");
         
         TareasBusiness tbl = new TareasBusiness();
+        int cod_Proyecto=(int) jComboBox1.getSelectedItem();
         Tarea tarea=new Tarea();
         tarea.setId(Integer.parseInt(txtId.getText()));
         tarea.setId_Proyecto(cod_Proyecto);
@@ -105,6 +127,8 @@ public class buscarTareas extends javax.swing.JInternalFrame {
         jTable = new javax.swing.JTable();
         btBuscar = new javax.swing.JButton();
         txtId = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -132,22 +156,43 @@ public class buscarTareas extends javax.swing.JInternalFrame {
 
         txtId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("seleccione el proyecto");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(btBuscar)
-                .addGap(18, 18, 18)
-                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btBuscar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btBuscar, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -167,8 +212,18 @@ public class buscarTareas extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btBuscarActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        try {
+            cargarTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(buscarTareas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btBuscar;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable;
     private javax.swing.JTextField txtId;
